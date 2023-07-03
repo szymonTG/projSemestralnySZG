@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="crudDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="crudDbModelStoreContainer">
+    <EntitySet Name="CustomerTb" EntityType="crudDbModel.Store.CustomerTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderProductTb" EntityType="crudDbModel.Store.OrderProductTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrdersTb" EntityType="crudDbModel.Store.OrdersTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductTb" EntityType="crudDbModel.Store.ProductTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="crudDbModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_OrdersTb_CustomerTb" Association="crudDbModel.Store.FK_OrdersTb_CustomerTb">
+      <End Role="CustomerTb" EntitySet="CustomerTb" />
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_OrdersTb" Association="crudDbModel.Store.FK_OrderProductTb_OrdersTb">
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_ProductTb" Association="crudDbModel.Store.FK_OrderProductTb_ProductTb">
+      <End Role="ProductTb" EntitySet="ProductTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CustomerTb">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Lastname" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="Address" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="City" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Phone" Type="nchar" Nullable="true" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="OrderProductTb">
+    <Key>
+      <PropertyRef Name="OrderProductID" />
+    </Key>
+    <Property Name="OrderProductID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrdersTb">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ProductTb">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Brand" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Category" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Price" Type="decimal" Nullable="true" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" Nullable="true" />
+    <Property Name="definition" Type="varbinary(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_OrdersTb_CustomerTb">
+    <End Role="CustomerTb" Type="crudDbModel.Store.CustomerTb" Multiplicity="1" />
+    <End Role="OrdersTb" Type="crudDbModel.Store.OrdersTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTb">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="OrdersTb">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_OrdersTb">
+    <End Role="OrdersTb" Type="crudDbModel.Store.OrdersTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="crudDbModel.Store.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdersTb">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_ProductTb">
+    <End Role="ProductTb" Type="crudDbModel.Store.ProductTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="crudDbModel.Store.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTb">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="crudDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomerTb">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="OrdersTb" Relationship="Self.FK_OrdersTb_CustomerTb" FromRole="CustomerTb" ToRole="OrdersTb" />
+        </EntityType>
+        <EntityType Name="OrderProductTb">
+          <Key>
+            <PropertyRef Name="OrderProductID" />
+          </Key>
+          <Property Name="OrderProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrdersTb" Relationship="Self.FK_OrderProductTb_OrdersTb" FromRole="OrderProductTb" ToRole="OrdersTb" />
+          <NavigationProperty Name="ProductTb" Relationship="Self.FK_OrderProductTb_ProductTb" FromRole="OrderProductTb" ToRole="ProductTb" />
+        </EntityType>
+        <EntityType Name="OrdersTb">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CustomerTb" Relationship="Self.FK_OrdersTb_CustomerTb" FromRole="OrdersTb" ToRole="CustomerTb" />
+          <NavigationProperty Name="OrderProductTb" Relationship="Self.FK_OrderProductTb_OrdersTb" FromRole="OrdersTb" ToRole="OrderProductTb" />
+        </EntityType>
+        <EntityType Name="ProductTb">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="OrderProductTb" Relationship="Self.FK_OrderProductTb_ProductTb" FromRole="ProductTb" ToRole="OrderProductTb" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_OrdersTb_CustomerTb">
+          <End Role="CustomerTb" Type="Self.CustomerTb" Multiplicity="1" />
+          <End Role="OrdersTb" Type="Self.OrdersTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTb">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="OrdersTb">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProductTb_OrdersTb">
+          <End Role="OrdersTb" Type="Self.OrdersTb" Multiplicity="1" />
+          <End Role="OrderProductTb" Type="Self.OrderProductTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTb">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderProductTb">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProductTb_ProductTb">
+          <End Role="ProductTb" Type="Self.ProductTb" Multiplicity="1" />
+          <End Role="OrderProductTb" Type="Self.OrderProductTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTb">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderProductTb">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="crudDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerTb" EntityType="Self.CustomerTb" />
+          <EntitySet Name="OrderProductTb" EntityType="Self.OrderProductTb" />
+          <EntitySet Name="OrdersTb" EntityType="Self.OrdersTb" />
+          <EntitySet Name="ProductTb" EntityType="Self.ProductTb" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_OrdersTb_CustomerTb" Association="Self.FK_OrdersTb_CustomerTb">
+            <End Role="CustomerTb" EntitySet="CustomerTb" />
+            <End Role="OrdersTb" EntitySet="OrdersTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProductTb_OrdersTb" Association="Self.FK_OrderProductTb_OrdersTb">
+            <End Role="OrdersTb" EntitySet="OrdersTb" />
+            <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProductTb_ProductTb" Association="Self.FK_OrderProductTb_ProductTb">
+            <End Role="ProductTb" EntitySet="ProductTb" />
+            <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="crudDbModelStoreContainer" CdmEntityContainer="crudDbEntities">
+    <EntitySetMapping Name="CustomerTb">
+      <EntityTypeMapping TypeName="IsTypeOf(crudDbModel.CustomerTb)">
+        <MappingFragment StoreEntitySet="CustomerTb">
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderProductTb">
+      <EntityTypeMapping TypeName="IsTypeOf(crudDbModel.OrderProductTb)">
+        <MappingFragment StoreEntitySet="OrderProductTb">
+          <ScalarProperty Name="OrderProductID" ColumnName="OrderProductID" />
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrdersTb">
+      <EntityTypeMapping TypeName="IsTypeOf(crudDbModel.OrdersTb)">
+        <MappingFragment StoreEntitySet="OrdersTb">
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductTb">
+      <EntityTypeMapping TypeName="IsTypeOf(crudDbModel.ProductTb)">
+        <MappingFragment StoreEntitySet="ProductTb">
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="IsTypeOf(crudDbModel.sysdiagrams)">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

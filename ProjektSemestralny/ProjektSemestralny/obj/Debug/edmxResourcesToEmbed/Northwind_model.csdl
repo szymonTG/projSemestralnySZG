@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="crudDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CustomerTb">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="OrdersTb" Relationship="Self.FK_OrdersTb_CustomerTb" FromRole="CustomerTb" ToRole="OrdersTb" />
+  </EntityType>
+  <EntityType Name="OrderProductTb">
+    <Key>
+      <PropertyRef Name="OrderProductID" />
+    </Key>
+    <Property Name="OrderProductID" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OrdersTb" Relationship="Self.FK_OrderProductTb_OrdersTb" FromRole="OrderProductTb" ToRole="OrdersTb" />
+    <NavigationProperty Name="ProductTb" Relationship="Self.FK_OrderProductTb_ProductTb" FromRole="OrderProductTb" ToRole="ProductTb" />
+  </EntityType>
+  <EntityType Name="OrdersTb">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="CustomerTb" Relationship="Self.FK_OrdersTb_CustomerTb" FromRole="OrdersTb" ToRole="CustomerTb" />
+    <NavigationProperty Name="OrderProductTb" Relationship="Self.FK_OrderProductTb_OrdersTb" FromRole="OrdersTb" ToRole="OrderProductTb" />
+  </EntityType>
+  <EntityType Name="ProductTb">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="OrderProductTb" Relationship="Self.FK_OrderProductTb_ProductTb" FromRole="ProductTb" ToRole="OrderProductTb" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_OrdersTb_CustomerTb">
+    <End Role="CustomerTb" Type="Self.CustomerTb" Multiplicity="1" />
+    <End Role="OrdersTb" Type="Self.OrdersTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTb">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="OrdersTb">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_OrdersTb">
+    <End Role="OrdersTb" Type="Self.OrdersTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="Self.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdersTb">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_ProductTb">
+    <End Role="ProductTb" Type="Self.ProductTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="Self.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTb">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="crudDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CustomerTb" EntityType="Self.CustomerTb" />
+    <EntitySet Name="OrderProductTb" EntityType="Self.OrderProductTb" />
+    <EntitySet Name="OrdersTb" EntityType="Self.OrdersTb" />
+    <EntitySet Name="ProductTb" EntityType="Self.ProductTb" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_OrdersTb_CustomerTb" Association="Self.FK_OrdersTb_CustomerTb">
+      <End Role="CustomerTb" EntitySet="CustomerTb" />
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_OrdersTb" Association="Self.FK_OrderProductTb_OrdersTb">
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_ProductTb" Association="Self.FK_OrderProductTb_ProductTb">
+      <End Role="ProductTb" EntitySet="ProductTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

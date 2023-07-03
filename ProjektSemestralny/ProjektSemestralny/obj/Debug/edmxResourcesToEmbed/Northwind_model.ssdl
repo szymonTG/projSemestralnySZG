@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="crudDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="crudDbModelStoreContainer">
+    <EntitySet Name="CustomerTb" EntityType="crudDbModel.Store.CustomerTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderProductTb" EntityType="crudDbModel.Store.OrderProductTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrdersTb" EntityType="crudDbModel.Store.OrdersTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductTb" EntityType="crudDbModel.Store.ProductTb" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="crudDbModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_OrdersTb_CustomerTb" Association="crudDbModel.Store.FK_OrdersTb_CustomerTb">
+      <End Role="CustomerTb" EntitySet="CustomerTb" />
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_OrdersTb" Association="crudDbModel.Store.FK_OrderProductTb_OrdersTb">
+      <End Role="OrdersTb" EntitySet="OrdersTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProductTb_ProductTb" Association="crudDbModel.Store.FK_OrderProductTb_ProductTb">
+      <End Role="ProductTb" EntitySet="ProductTb" />
+      <End Role="OrderProductTb" EntitySet="OrderProductTb" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CustomerTb">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Lastname" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="Address" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="City" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Phone" Type="nchar" Nullable="true" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="OrderProductTb">
+    <Key>
+      <PropertyRef Name="OrderProductID" />
+    </Key>
+    <Property Name="OrderProductID" Type="int" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrdersTb">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ProductTb">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Brand" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Category" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Price" Type="decimal" Nullable="true" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" Nullable="true" />
+    <Property Name="definition" Type="varbinary(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="FK_OrdersTb_CustomerTb">
+    <End Role="CustomerTb" Type="crudDbModel.Store.CustomerTb" Multiplicity="1" />
+    <End Role="OrdersTb" Type="crudDbModel.Store.OrdersTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTb">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="OrdersTb">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_OrdersTb">
+    <End Role="OrdersTb" Type="crudDbModel.Store.OrdersTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="crudDbModel.Store.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdersTb">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProductTb_ProductTb">
+    <End Role="ProductTb" Type="crudDbModel.Store.ProductTb" Multiplicity="1" />
+    <End Role="OrderProductTb" Type="crudDbModel.Store.OrderProductTb" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTb">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="OrderProductTb">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

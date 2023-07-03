@@ -1,0 +1,125 @@
+﻿<Window x:Class="Crud.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crud"
+        mc:Ignorable="d"
+        Title="ProductsWindow" Height="280" Width="800" Loaded="Window_Loaded" Icon="icon.ico">
+    <Window.Resources>
+        <CollectionViewSource x:Key="orderProductTbViewSource" d:DesignSource="{d:DesignInstance {x:Type local:OrderProductTb}, CreateList=True}"/>
+        <CollectionViewSource x:Key="ordersTbViewSource" d:DesignSource="{d:DesignInstance {x:Type local:OrdersTb}, CreateList=True}"/>
+        <CollectionViewSource x:Key="productTbViewSource" d:DesignSource="{d:DesignInstance {x:Type local:ProductTb}, CreateList=True}"/>
+        <RoutedUICommand x:Key="DeleteProduct" Text="Delete"/>
+        <RoutedUICommand x:Key="UpdateProduct" Text="Update"/>
+        <RoutedUICommand x:Key="AddProduct" Text="Add"/>
+        <RoutedUICommand x:Key="CancelProduct" Text="Cancel"/>
+        <Style x:Key="NavButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Margin" Value="2,2,2,0"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="auto"/>
+        </Style>
+        <Style x:Key="Label" TargetType="{x:Type Label}" BasedOn="{x:Null}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Height" Value="23"/>
+        </Style>
+        <CollectionViewSource x:Key="productTbOrderProductTbViewSource" Source="{Binding OrderProductTb, Source={StaticResource productTbViewSource}}"/>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource DeleteProduct}" Executed="DeleteProductHandler"/>
+        <CommandBinding Command="{StaticResource UpdateProduct}" Executed="UpdateProductHandler"/>
+        <CommandBinding Command="{StaticResource AddProduct}" Executed="AddProductHandler"/>
+        <CommandBinding Command="{StaticResource CancelProduct}" Executed="CancelProductHandler"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid DataContext="{StaticResource productTbViewSource}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--<Grid x:Name="newProductGrid" HorizontalAlignment="Left" Margin="77,28,0,0" Grid.Row="2" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Brand:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <TextBox x:Name="add_productBrand" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding Brand, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Category:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBox x:Name="add_productCategory" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding Category, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Price:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox x:Name="add_productPrice" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Price, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Product ID:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="add_productId" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding ProductID, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Product Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+            <TextBox x:Name="add_productName" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" Text="{Binding ProductName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        </Grid>-->
+        <Grid x:Name="newProductGrid"> 
+        <Label Content="PRODUCT ID:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,32,0,0" Grid.Row="0" VerticalAlignment="Top" Width="110" Style="{StaticResource Label}">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <Label Content="PRODUCT NAME:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,63,0,0" Grid.Row="1" VerticalAlignment="Top" Width="110">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <Label Content="BRAND:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,94,0,0" Grid.Row="2" VerticalAlignment="Top" Width="110" AutomationProperties.IsOffscreenBehavior="FromClip" RenderTransformOrigin="0.5,0.5">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <Label Content="CATEGORY:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,125,0,0" Grid.Row="3" VerticalAlignment="Top" Width="110">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <Label Content="PRICE:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,156,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110">
+                    <Label.Effect>
+                        <DropShadowEffect/>
+                    </Label.Effect>
+                </Label>
+                <TextBox x:Name="add_productId" HorizontalAlignment="Left" Height="23" Margin="183,35,0,0" Grid.Row="0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="add_productName" HorizontalAlignment="Left" Height="23" Margin="183,66,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="add_productBrand" HorizontalAlignment="Left" Height="23" Margin="183,98,0,0" Grid.Row="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="add_productCategory" HorizontalAlignment="Left" Height="23" Margin="183,128,0,0" Grid.Row="3" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="add_productPrice" HorizontalAlignment="Left" Height="23" Margin="183,159,0,0" Grid.Row="4" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <GroupBox Header="Add product" HorizontalAlignment="Left" Height="179" Margin="21,10,0,0" VerticalAlignment="Top" Width="322"/>
+        <StackPanel Orientation="Horizontal" Margin="21,194,434,0" Height="36" VerticalAlignment="Top" Background="Transparent" DataContext="{StaticResource productTbViewSource}" Grid.Row="2">
+            <Button x:Name="btnAddProduct" Content="Add" Command="{StaticResource AddProduct}" FontSize="11" Width="80" Style="{StaticResource NavButton}" Click="btnAddProduct_Click"/>
+            <Button x:Name="btnUpdate" Content="Update" Command="{StaticResource UpdateProduct}" FontSize="11" Width="80" Style="{StaticResource NavButton}" Click="btnUpdate_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Command="{StaticResource CancelProduct}" FontSize="11" Width="80" Style="{StaticResource NavButton}"/>
+            <Button x:Name="btnDeleteProduct" Content="Delete" Command="{StaticResource DeleteProduct}" FontSize="11" Width="80" Style="{StaticResource NavButton}" Click="btnDeleteProduct_Click"/>
+        </StackPanel>
+            </Grid>
+        <DataGrid x:Name="productTbDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource productTbViewSource}}" Margin="364,32,28,0" RowDetailsVisibilityMode="VisibleWhenSelected" SelectionChanged="productTbDataGrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="productIDColumn" Binding="{Binding ProductID}" Header="Product ID" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="productNameColumn" Binding="{Binding ProductName}" Header="Product Name" Width="150"/>
+                    <!--<DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Command="{StaticResource DeleteOrderCommand}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                    <DataGridTextColumn x:Name="brandColumn" Binding="{Binding Brand}" Header="Brand" Width="60"/>
+                    <DataGridTextColumn x:Name="categoryColumn" Binding="{Binding Category}" Header="Category" Width="70"/>
+                    <DataGridTextColumn x:Name="priceColumn" Binding="{Binding Price}" Header="Price" Width="SizeToHeader"/>
+                </DataGrid.Columns>
+            </DataGrid>
+    </Grid>
+    </Grid>
+</Window>
